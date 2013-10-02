@@ -1,0 +1,121 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:head>
+</h:head>
+<h:body>
+
+	<h:form id="formPrincipal">
+		<p:dataTable var="lista" value="#{medicoCtrl.listarMedico}"
+			id="tabelaMedico" emptyMessage="Nothing in the table"
+			selectionMode="single" rowKey="#{lista.medicoId}"
+			selection="#{medicoCtrl.medico}">
+
+			<f:facet name="header">Lista de Medico Cadastradas</f:facet>
+
+			<p:column headerText="Nome">
+				<h:outputText value="#{lista.nome}" />
+			</p:column>
+
+			<p:column headerText="CRM">
+				<h:outputText value="#{lista.crm}" />
+			</p:column>
+
+			<p:column headerText="Bairro">
+				<h:outputText value="#{lista.bairro}" />
+			</p:column>
+
+			<p:column headerText="Cidade">
+				<h:outputText value="#{lista.cidade}" />
+			</p:column>
+			<p:column headerText="Estado">
+				<h:outputText value="#{lista.estado}" />
+			</p:column>
+			<p:column headerText="Logradouro">
+				<h:outputText value="#{lista.logradouro}" />
+			</p:column>
+			<p:column headerText="Numero">
+				<h:outputText value="#{lista.numero}" />
+			</p:column>
+
+			<p:column headerText="Ações">
+				<p:commandLink title="Alterar" oncomplete="dialogAlterar.show()"
+					update=":formAlterar:Alterar" immediate="true"
+					actionListener="#{medicoCtrl.preparareEditar(lista)}">
+					<p:graphicImage
+						value="/image/1380081290_package-installed-updated.png" />
+				</p:commandLink>
+				<p:spacer height="15px" />
+				<p:commandLink title="Excluir"
+					actionListener="#{medicoCtrl.delete(lista)}" update="@form">
+					<p:graphicImage value="/image/1380081071_DeleteRed.png" />
+				</p:commandLink>
+			</p:column>
+		</p:dataTable>
+
+		<p:commandButton value="Cadastrar" id="cadastrar" update="@form"
+			oncomplete="dialogCadastrar.show()" actionListener="medicoCtrl.crearMedico"/>
+	</h:form>
+	<h:form id="formAlterar">
+		<p:dialog header="Alterar" widgetVar="dialogAlterar" modal="true"
+			id="Alterar">
+			<p:panelGrid id="panelAlterar" columns="2">
+				<h:outputText value="Nome:" />
+				<p:inputText value="#{medicoCtrl.medico.nome}" />
+				<h:outputText value="Crm:" />
+				<p:inputText value="#{medicoCtrl.medico.crm}" />
+				<h:outputText value="Bairro:" />
+				<p:inputText value="#{medicoCtrl.medico.bairro}" />
+				<h:outputText value="Cidade:" />
+				<p:inputText value="#{medicoCtrl.medico.cidade}" />
+				<h:outputText value="Logradouro:" />
+				<p:inputText value="#{medicoCtrl.medico.logradouro}" />
+				<h:outputText value="Estado:" />
+				<p:inputText value="#{medicoCtrl.medico.estado}" />
+				<h:outputText value="Numero:" />
+				<p:inputText value="#{medicoCtrl.medico.numero}" />
+			</p:panelGrid>
+			<p:commandButton value="Alterar" 
+				actionListener="#{medicoCtrl.update()}"
+				update=":formPrincipal:tabelaMedico,@form"
+				oncomplete="dialogAlterar.hide()" />
+		</p:dialog>
+	</h:form>
+
+	<h:form id="formCadastrar">
+		<p:dialog header="Cadastrar" widgetVar="dialogCadastrar" modal="true" dynamic="true">
+			<p:panelGrid id="panelCadastrar" columns="2">
+				<h:outputText value="Nome:" />
+				<p:inputText value="#{medicoCtrl.medico.nome}" />
+				<h:outputText value="Crm:" />
+				<p:inputText value="#{medicoCtrl.medico.crm}" />
+				<h:outputText value="Bairro:" />
+				<p:inputText value="#{medicoCtrl.medico.bairro}" />
+				<h:outputText value="Cidade:" />
+				<p:inputText value="#{medicoCtrl.medico.cidade}" />
+				<h:outputText value="Logradouro:" />
+				<p:inputText value="#{medicoCtrl.medico.logradouro}" />
+				<h:outputText value="Estado:" />
+				<p:inputText value="#{medicoCtrl.medico.estado}" />
+				<h:outputText value="Numero:" />
+				<p:inputText value="#{medicoCtrl.medico.numero}" />
+			</p:panelGrid>
+			<p:commandButton value="Cadastrar"
+				actionListener="#{medicoCtrl.salvar()}"
+				update=":formPrincipal:tabelaMedico,@form"
+				oncomplete="dialogCadastrar.hide()" />
+		</p:dialog>
+	</h:form>
+
+	<h:form id="formExcluir">
+
+
+
+	</h:form>
+
+</h:body>
+</html>

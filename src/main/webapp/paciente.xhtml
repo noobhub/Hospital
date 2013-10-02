@@ -1,0 +1,99 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<h:html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:head>
+</h:head>
+<h:body>
+
+	<h:form id="formPrincipal">
+		<p:growl autoUpdate="true" life="10000" />
+		<p:dataTable var="lista" value="#{pacienteCtrl.listarPaciente}"
+			id="tabelaPaciente" emptyMessage="Nothing in the table"
+			selectionMode="single" rowKey="#{lista.pacienteId}"
+			selection="#{pacienteCtrl.paciente}">
+			<f:facet name="header">Lista de Paciente Cadastradas</f:facet>
+
+			<p:column headerText="Nome">
+				<h:outputText value="#{lista.nome}" />
+			</p:column>
+
+			<p:column headerText="DoB">
+				<h:outputText value="#{lista.data_nascemento}" />
+			</p:column>
+
+			<p:column headerText="Bairro">
+				<h:outputText value="#{lista.bairro}" />
+			</p:column>
+
+			<p:column headerText="Cidade">
+				<h:outputText value="#{lista.cidade}" />
+			</p:column>
+			<p:column headerText="Estado">
+				<h:outputText value="#{lista.estado}" />
+			</p:column>
+			<p:column headerText="Logradouro">
+				<h:outputText value="#{lista.logradouro}" />
+			</p:column>
+			<p:column headerText="Numero">
+				<h:outputText value="#{lista.numero}" />
+			</p:column>
+			<p:column headerText="Medico">
+				<h:outputText value="#{lista.medico.nome}" />
+			</p:column>
+			<p:column headerText="Ações">
+				<p:commandLink title="Alterar" oncomplete="dialogCadastrar.show()"
+					update=":formPrincipal:panelCadastrar @this"
+					actionListener="#{pacienteCtrl.preparareEditar(lista)}">
+					<p:graphicImage
+						value="/image/1380081290_package-installed-updated.png" />
+				</p:commandLink>
+				<p:spacer height="15px" />
+				<p:commandLink title="Excluir"
+					actionListener="#{pacienteCtrl.delete(lista)}" update="@form">
+					<p:graphicImage value="/image/1380081071_DeleteRed.png" />
+				</p:commandLink>
+			</p:column>
+		</p:dataTable>
+		<p:commandButton value="Cadastrar" id="cadastrar" update="panelCadastrar "
+			oncomplete="dialogCadastrar.show()" />
+			
+		<p:dialog header="Cadastrar" widgetVar="dialogCadastrar" modal="true">
+			
+			<p:panelGrid id="panelCadastrar" columns="2">
+				<h:outputText value="Nome:"  />
+				<p:inputText value="#{pacienteCtrl.paciente.nome}" />
+				<h:outputText value="Data:" />
+				<p:calendar value="#{pacienteCtrl.paciente.data_nascemento}"
+					id="data" pattern="yyyy-MM-dd" mode="popup" showOn="button">
+				</p:calendar>
+				<h:outputText value="Bairro:" />
+				<p:inputText value="#{pacienteCtrl.paciente.bairro}" />
+				<h:outputText value="Cidade:" />
+				<p:inputText value="#{pacienteCtrl.paciente.cidade}" />
+				<h:outputText value="Logradouro:" />
+				<p:inputText value="#{pacienteCtrl.paciente.logradouro}" />
+				<h:outputText value="Estado:" />
+				<p:inputText value="#{pacienteCtrl.paciente.estado}" />
+				<h:outputText value="Numero:" />
+				<p:inputText value="#{pacienteCtrl.paciente.numero}" />
+				<h:outputText value="Medicos:" />
+				<p:selectOneMenu value="#{pacienteCtrl.paciente.medico}"
+					converter="medicoConverter" converterMessage="Erro de conversao">
+					<f:selectItem itemLabel="Selecione" itemValue="${null}" />
+					<f:selectItems var="med" value="#{medicoCtrl.all}"
+						itemLabel="#{med.nome}" itemValue="#{med}" />
+				</p:selectOneMenu>
+				<h:inputHidden value="#{pacienteCtrl.paciente.pacienteId}" style="display: none" />
+			</p:panelGrid>
+			<p:commandButton
+				value="#{pacienteCtrl.paciente.pacienteId == 0 ? 'Cadastrar':'Atualizar'}"
+				actionListener="#{pacienteCtrl.salvar()}" update="@all"
+				oncomplete="dialogCadastrar.hide()" />
+		</p:dialog>
+	</h:form>
+</h:body>
+</h:html>
